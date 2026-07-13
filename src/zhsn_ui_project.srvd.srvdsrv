@@ -1,0 +1,5 @@
+@EndUserText.label: 'Project Service'
+define service ZHSN_UI_Project {
+  expose ZHSN_C_ProjHdr as ProjectHeader;
+  expose ZHSN_C_ProjItm as ProjectItem;
+}

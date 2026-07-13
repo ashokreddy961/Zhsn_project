@@ -1,0 +1,79 @@
+//@Metadata.layer: #CORE
+//@UI.headerInfo: { typeName: 'Project', typeNamePlural: 'Projects',
+//                  title: { type: #STANDARD, value: 'ProjectID' } }
+//annotate entity ZHSN_C_ProjHdr with
+//{
+//  @UI.facet: [
+//    { id: 'Head',  purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE, label: 'Project',       position: 10 },
+//    { id: 'Upload', purpose: #STANDARD, type: #FIELDGROUP_REFERENCE,
+//      label: 'Upload Excel', position: 15, targetQualifier: 'UploadGroup' },
+//    { id: 'Items', purpose: #STANDARD, type: #LINEITEM_REFERENCE,       label: 'Work Packages', position: 20, targetElement: '_Item' } ]
+//
+//  // ProjectID = Go filter + plain list column. NO action here anymore.
+//  @UI.selectionField: [ { position: 10 } ]
+//  @UI.lineItem:       [ { position: 10, importance: #HIGH } ]
+//  // "Get Project Data" now lives on the OBJECT PAGE header (data entry screen)
+//  @UI.identification: [ { position: 10 },
+//                        { type: #FOR_ACTION, dataAction: 'getProjectData', label: 'Get Project Data' } ]
+//  ProjectID;
+//
+//  @UI.lineItem:       [ { position: 20 } ]
+//  @UI.identification: [ { position: 20 } ]
+//  ProjectName;
+//
+//  @UI.identification: [ { position: 30 } ]   ProjectStage;
+//  @UI.identification: [ { position: 40 } ]   OrgID;
+//  @UI.identification: [ { position: 50 } ]   Currency;
+//  @UI.identification: [ { position: 60 } ]   Customer;
+//  @UI.identification: [ { position: 70 } ]   CostCenter;
+//  @UI.identification: [ { position: 80 } ]   ProfitCenter;
+//  @UI.identification: [ { position: 90 } ]   StartDate;
+//  @UI.identification: [ { position: 100 } ]  EndDate;
+//  @UI.identification: [ { position: 110 } ]  ProjectDesc;
+//  @UI.fieldGroup: [{ qualifier: 'UploadGroup', position: 10 }]
+//  @UI.lineItem: [{ position: 10, label: 'Upload Excel',
+//                   dataAction: 'uploadExcel', type: #FOR_ACTION }]
+//  Attachment;
+//}
+
+
+
+
+@Metadata.layer: #CORE
+@UI.headerInfo: { typeName: 'Project', typeNamePlural: 'Projects',
+                  title: { type: #STANDARD, value: 'ProjectID' } }
+annotate entity ZHSN_C_ProjHdr with
+{
+  @UI.facet: [
+    { id: 'Head',  purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE, label: 'Project',       position: 10 },
+    { id: 'Upload', purpose: #STANDARD, type: #FIELDGROUP_REFERENCE,
+      label: 'Upload Excel', position: 15, targetQualifier: 'UploadGroup' },
+    { id: 'Items', purpose: #STANDARD, type: #LINEITEM_REFERENCE,       label: 'Work Packages', position: 20, targetElement: '_Item' } ]
+
+  @UI.selectionField: [ { position: 10 } ]
+  @UI.lineItem:       [ { position: 10, importance: #HIGH } ]
+@UI.identification: [ { position: 10 },
+                        { type: #FOR_ACTION, dataAction: 'getProjectData',      label: 'Get Project Data' },
+                        { type: #FOR_ACTION, dataAction: 'uploadExcel',         label: 'Upload Excel' },
+                        { type: #FOR_ACTION, dataAction: 'activityAllocation',  label: 'Activity Allocation' } ]
+  ProjectID;
+
+  @UI.lineItem:       [ { position: 20 } ]
+  @UI.identification: [ { position: 20 } ]
+  ProjectName;
+
+  @UI.identification: [ { position: 30 } ]   ProjectStage;
+  @UI.identification: [ { position: 40 } ]   OrgID;
+  @UI.identification: [ { position: 50 } ]   Currency;
+  @UI.identification: [ { position: 60 } ]   Customer;
+  @UI.identification: [ { position: 70 } ]   CostCenter;
+  @UI.identification: [ { position: 80 } ]   ProfitCenter;
+  @UI.identification: [ { position: 90 } ]   StartDate;
+  @UI.identification: [ { position: 100 } ]  EndDate;
+  @UI.identification: [ { position: 110 } ]  ProjectDesc;
+  @UI.identification: [ { position: 120 } ]  ReferenceDocument;
+  @UI.identification: [ { position: 130 } ]  AllocStatus;
+
+  @UI.fieldGroup: [{ qualifier: 'UploadGroup', position: 10 }]
+  Attachment;
+}

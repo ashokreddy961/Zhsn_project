@@ -1,0 +1,104 @@
+managed implementation in class zbp_hsn_i_projhdr unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZHSN_I_ProjHdr alias Header
+persistent table zhsn_proj_hdr
+draft table zhsn_proj_hdr_d
+lock master
+total etag LocalLastChangedAt
+authorization master ( global )
+etag master LocalLastChangedAt
+{
+  field ( readonly, numbering : managed ) ProjUuid;
+  field ( readonly ) CreatedBy, CreatedAt, LastChangedBy, LastChangedAt, LocalLastChangedAt;
+  field ( readonly ) ProjectName, ProjectStage, OrgID, Currency, Customer,
+  CostCenter, ProfitCenter, StartDate, EndDate, ProjectDesc;
+  action activityAllocation result [1] $self;
+  field ( readonly ) ReferenceDocument, AllocStatus, AllocResponse;
+
+  create;
+  update;
+  delete;
+
+  action getProjectData;
+  action uploadExcel result [1] $self;
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare;
+
+  mapping for zhsn_proj_hdr
+    {
+      ProjUuid           = proj_uuid;
+      ProjectID          = project_id;
+      ProjectName        = project_name;
+      ProjectStage       = project_stage;
+      OrgID              = org_id;
+      Currency           = currency;
+      Customer           = customer;
+      CostCenter         = cost_center;
+      ProfitCenter       = profit_center;
+      StartDate          = start_date;
+      EndDate            = end_date;
+      ProjectDesc        = project_desc;
+      CreatedBy          = created_by;
+      CreatedAt          = created_at;
+      LastChangedBy      = last_changed_by;
+      LastChangedAt      = last_changed_at;
+      LocalLastChangedAt = local_last_changed_at;
+      Attachment  = attachment;
+      MimeType    = mimetype;
+      FileName    = filename;
+      ReferenceDocument = reference_document;
+      AllocStatus       = alloc_status;
+      AllocResponse     = alloc_response;
+    }
+
+  association _Item { create; with draft; }
+}
+
+define behavior for ZHSN_I_ProjItm alias Item
+persistent table zhsn_proj_itm
+draft table zhsn_proj_itm_d
+lock dependent by _Header
+authorization dependent by _Header
+etag master LocalLastChangedAt
+{
+  field ( readonly, numbering : managed ) ItemUuid;
+  field ( readonly ) ProjUuid;
+  field ( readonly ) ProjectID, WorkPackageID, WorkPackageName, Description, WPStartDate, WPEndDate,
+UnitQty,
+ConsumeQty,
+BalnacedQty;
+
+  update;
+  delete;
+
+  determination calcQuantities on modify { field TobeBilledQty; create; }
+  validation validateOverBilling on save { field TobeBilledQty; }
+
+  mapping for zhsn_proj_itm
+    {
+      ItemUuid           = item_uuid;
+      ProjUuid           = parent_uuid;
+      ProjectID          = project_id;
+      WorkPackageID      = workpackage_id;
+      WorkPackageName    = workpackage_name;
+      Description        = description;
+      WPStartDate        = wp_start_date;
+      WPEndDate          = wp_end_date;
+      UnitQty            = unit_quantity;
+      BalnacedQty        = balance_quantity;
+      ConsumeQty         = consumed_quantity;
+      TobeBilledQty      = tobe_billed_quantity;
+      //Location = location;                Address = address;
+      //ContactPerson = contact_person;
+      LastChangedAt      = last_changed_at;
+      LocalLastChangedAt = local_last_changed_at;
+    }
+
+  association _Header;
+}

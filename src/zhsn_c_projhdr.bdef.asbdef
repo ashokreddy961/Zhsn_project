@@ -1,0 +1,48 @@
+projection;
+strict ( 2 );
+
+use draft;
+
+define behavior for ZHSN_C_ProjHdr alias Header
+{
+  use create;
+  use update;
+  use delete;
+
+  use action getProjectData;
+
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+  use action uploadExcel;
+  use action activityAllocation;
+
+  use association _Item { create; with draft; }
+
+  side effects
+  {
+    action getProjectData affects
+      field ProjectName, field ProjectStage, field OrgID, field Currency,
+      field Customer, field CostCenter, field ProfitCenter,
+      field StartDate, field EndDate, field ProjectDesc,
+      entity _Item;
+
+    action uploadExcel affects entity _Item;
+    action activityAllocation affects field ReferenceDocument, field AllocStatus, field AllocResponse;
+  }
+}
+
+define behavior for ZHSN_C_ProjItm alias Item
+{
+  use update;
+  use delete;
+
+  use association _Header;
+
+  side effects
+  {
+    field TobeBilledQty affects field ConsumeQty, field BalnacedQty;
+  }
+}

@@ -1,0 +1,24 @@
+@Metadata.layer: #CORE
+annotate entity ZHSN_C_ProjItm with
+{
+  @UI.lineItem: [ { position: 10 } ]
+  WorkPackageID;
+
+  @UI.lineItem: [ { position: 20 } ]
+  WorkPackageName;
+
+  @UI.lineItem: [ { position: 30 } ]
+  Description;
+
+  @UI.lineItem: [ { position: 40 } ]
+  UnitQty;
+
+  @UI.lineItem: [ { position: 50 }, {label: 'Consumed Qty'} ]
+  ConsumeQty;
+
+  @UI.lineItem: [ { position: 60 } ]
+  BalnacedQty;
+
+  @UI.lineItem: [ { position: 70 } ]
+  TobeBilledQty;
+}
